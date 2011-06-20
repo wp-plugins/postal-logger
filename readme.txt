@@ -27,6 +27,9 @@ None.
 
 == Changelog ==
 
+= 0.1.1 = 
+Minor typo fix
+
 = 0.1 = 
 Added city logging
 

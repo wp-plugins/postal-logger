@@ -3,7 +3,7 @@
 Plugin Name: Postal Logger	
 Plugin URI: http://yourdomain.com/
 Description: Used to log postal codes of users coming to your blog.
-Version: 0.1
+Version: 0.1.1
 Author: Don Kukral
 Author URI: http://yourdomain.com
 License: GPL
@@ -16,6 +16,7 @@ function postal_logger_menu() {
     } else {
         $log = get_option('postal_logger', serialize(array()));
     }
+    $log = unserialize($log);
 	asort($log);
 ?>
 	<div class="wrap">
