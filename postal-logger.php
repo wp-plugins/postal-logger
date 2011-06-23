@@ -3,13 +3,14 @@
 Plugin Name: Postal Logger	
 Plugin URI: http://yourdomain.com/
 Description: Used to log postal codes of users coming to your blog.
-Version: 0.1.1
+Version: 0.1.2
 Author: Don Kukral
 Author URI: http://yourdomain.com
 License: GPL
 */
 
-
+#error_reporting(E_ALL);
+#ini_set("display_errors", 1);
 function postal_logger_menu() {
     if ($_GET['view'] == 'city') {
         $log = get_option('postal_logger_city', serialize(array()));
@@ -23,12 +24,23 @@ function postal_logger_menu() {
 	<h2>Postal Logger</h2>
 	<ul id="postal_logger_menu">
 <?php
-    if ($_GET['view'] == 'city') {
+    if ((array_key_exists('reset', $_GET) && ($_GET['reset'] == 1))) {
+        if ($_GET['view'] == 'city') {
+    		delete_option('postal_logger_city');#, serialize(array()));
+        } elseif ($_GET['view'] == 'postal') {
+    		delete_option('postal_logger');#, serialize(array()));
+    	} else {
+            print '<p>Unknown view</p>';
+        }
+    }
+    if ((array_key_exists('view', $_GET) && ($_GET['view'] == 'city'))) {
         echo '<li><a href="?page=Postal-Logger">Postal Code</a></li>';
         echo '<li class="current">City</li>';
+        $view = 'city';
     } else {
         echo '<li class="current">Postal Code</li>';
         echo '<li><a href="?page=Postal-Logger&view=city">City</a></li>';
+        $view = 'postal';
     }
 ?>
 	</ul>
@@ -50,12 +62,17 @@ function postal_logger_menu() {
 	</thead>
 	<tbody>
 <?php
+    $count = 0;
 	foreach (array_reverse($log, true) as $k=>$v) {
-		print "<tr><td>" . $k . "</td><td>" . $v . "</td></tr>\n";
+	    if ($count < 20) {
+		    print "<tr><td>" . $k . "</td><td>" . $v . "</td></tr>\n";
+		}
+		$count++;
 	}
 ?>
 	</tbody>
 	</table>
+	[<a href="?page=Postal-Logger&view=<?php echo $view; ?>&reset=1">Reset</a>]
 	</p>
 	</div>
 	
@@ -109,10 +126,13 @@ function capture_postal_code() {
 	if (!session_id())
 		session_start();
 		
-	$location = geoip_record_by_name($_SERVER['REMOTE_ADDR']);
+#	$location = geoip_record_by_name($_SERVER['REMOTE_ADDR']);
+    $location = geoip_record_by_name('98.24.93.51');
+
+
     
 	$log = unserialize(get_option('postal_logger', serialize(array())));
-	if (!$_COOKIE['postal_code']) {
+	if ((!$_COOKIE['postal_code']) && (!is_bot($_SERVER['HTTP_USER_AGENT']))) {
 		if ($location) {
 			$postal_code = $location['postal_code'];
 			if ($postal_code == '') { $postal_code = 'unknown'; }
@@ -135,7 +155,7 @@ function capture_postal_code() {
 	
 	$log_city = unserialize(get_option('postal_logger_city', serialize(array())));
 
-	if (!$_COOKIE['city']) {
+    if ((!$_COOKIE['city']) && (!is_bot($_SERVER['HTTP_USER_AGENT']))) {
 		if ($location) {
 			$city = $location['city'];
 			if ($city == '') { $city = 'unknown'; }
@@ -157,4 +177,34 @@ function capture_postal_code() {
 	}
 
 }
+
+//returns 1 if the user agent is a bot
+function is_bot($user_agent)
+{
+  //if no user agent is supplied then assume it's a bot
+  if($user_agent == "")
+    return 1;
+
+  //array of bot strings to check for
+  $bot_strings = Array(  "google",     "bot",
+            "yahoo",     "spider",
+            "archiver",   "curl",
+            "python",     "nambu",
+            "twitt",     "perl",
+            "sphere",     "PEAR",
+            "java",     "wordpress",
+            "radian",     "crawl",
+            "yandex",     "eventbox",
+            "monitor",   "mechanize",
+            "facebookexternal"
+          );
+  foreach($bot_strings as $bot)
+  {
+    if(strpos($user_agent,$bot) !== false)
+    { return 1; }
+  }
+  
+  return 0;
+}
+
 ?>
