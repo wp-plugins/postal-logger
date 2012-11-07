@@ -1,5 +1,5 @@
 === Postal Logger ===
-Contributors: jboydston, dkukral
+Contributors: jboydston, dkukral, Droyal
 Donate link: 
 Tags: geo, location, log
 Requires at least: 3.0
