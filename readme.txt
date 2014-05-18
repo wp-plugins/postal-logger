@@ -1,10 +1,10 @@
 === Postal Logger ===
-Contributors: jboydston, dkukral, Droyal
+Contributors: jboydston, dkukral
 Donate link: 
 Tags: geo, location, log
 Requires at least: 3.0
-Tested up to: 3.2.1
-Stable tag: 1.0
+Tested up to: 3.9.1
+Stable tag: 1.1
 
 Plugin for WordPress that allows you log user postal codes.
 
@@ -13,7 +13,7 @@ Plugin for WordPress that allows you log user postal codes.
 Used to log postal codes of users coming to your blog.
 
 == License ==
-Copyright 2010 - 2011 Joe Boydston, Don Kukral
+Copyright 2010 - 2014 Joe Boydston, Don Kukral
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,6 +43,8 @@ None.
 None.
 
 == Changelog ==
+= 1.1 = 
+Verified compatibility with WP 3.9.1
 
 = 1.0 = 
 Added license and copyright information
