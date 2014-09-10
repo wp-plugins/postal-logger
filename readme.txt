@@ -3,8 +3,8 @@ Contributors: jboydston, dkukral
 Donate link: 
 Tags: geo, location, log
 Requires at least: 3.0
-Tested up to: 3.9.1
-Stable tag: 1.1
+Tested up to: 4.0
+Stable tag: 1.2
 
 Plugin for WordPress that allows you log user postal codes.
 
@@ -43,6 +43,9 @@ None.
 None.
 
 == Changelog ==
+= 1.2 = 
+Verified compatibility with WP 4.0
+
 = 1.1 = 
 Verified compatibility with WP 3.9.1
 
